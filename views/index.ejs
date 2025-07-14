@@ -1,0 +1,11 @@
+<h1>Online Shop</h1>
+<form method="GET" action="/">
+    <input type="text" name="search" placeholder="Search products">
+    <button type="submit">Search</button>
+</form>
+<ul>
+    <% products.forEach(product => { %>
+        <li><%= product.name %> - $<%= product.price %></li>
+    <% }); %>
+</ul>
+<p>Some doors are left unlocked by mistake.</p>
