@@ -11,6 +11,7 @@ function createMD5Hash(password) {
 
 const app = express();
 const port = 3000;
+const os = require('os');
 
 // ตั้งค่า EJS และ static files
 app.set('view engine', 'ejs');
@@ -142,6 +143,19 @@ app.use((req, res) => {
 
 
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+function getLocalExternalIPv4() {
+    const interfaces = os.networkInterfaces();
+    for (const ifaceArr of Object.values(interfaces)) {
+        for (const iface of ifaceArr) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return 'localhost';
+}
+
+app.listen(port, '0.0.0.0', () => {
+    const address = getLocalExternalIPv4();
+    console.log(`Server running at http://${address}:${port}`);
 });
