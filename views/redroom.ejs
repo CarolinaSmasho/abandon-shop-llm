@@ -44,15 +44,29 @@
         context2.textBaseline = 'middle';
         context2.fillText("B64", canvas2.width / 2, canvas2.height / 2);
 
+        const canvas3 = document.createElement('canvas');
+        canvas3.width = 256;
+        canvas3.height = 256;
+        const context3 = canvas3.getContext('2d');
+        context3.fillStyle = '#000000'; // Black background for text
+        context3.fillRect(0, 0, canvas3.width, canvas3.height);
+        context3.font = '40px Courier New';
+        context3.fillStyle = '#FF0000'; // Red neon text
+        context3.textAlign = 'center';
+        context3.textBaseline = 'middle';
+        context3.fillText("/secrets", canvas3.width / 2, canvas3.height / 2);
+
+
         // Create texture from canvas
         const textTexture = new THREE.CanvasTexture(canvas);
         const topTexture = new THREE.CanvasTexture(canvas2);
+        const sideTexture = new THREE.CanvasTexture(canvas3);
         
 
         // Materials for cube faces
         const materials = [
             new THREE.MeshBasicMaterial({ color: 0xFF0000, side: THREE.BackSide }), // Right
-            new THREE.MeshBasicMaterial({ color: 0xFF0000, side: THREE.BackSide }), // Left
+            new THREE.MeshBasicMaterial({ map: sideTexture, side: THREE.BackSide }), // Left
             new THREE.MeshBasicMaterial({ map: topTexture, side: THREE.BackSide }), // Top
             new THREE.MeshBasicMaterial({ color: 0xFF0000, side: THREE.BackSide }), // Bottom
             new THREE.MeshBasicMaterial({ color: 0xFF0000, side: THREE.BackSide }), // Front (transparent)
@@ -84,6 +98,12 @@
                 context2.fillStyle = `#FF${Math.floor(Math.random() * 256).toString(16).padStart(2, '0')}00`; // Random red shade
                 context2.fillText("B64", canvas.width / 2, canvas.height / 2);
                 topTexture.needsUpdate = true;
+
+                context3.fillStyle = '#000000';
+                context3.fillRect(0, 0, canvas.width, canvas.height);
+                context3.fillStyle = `#FF${Math.floor(Math.random() * 256).toString(16).padStart(2, '0')}00`; // Random red shade
+                context3.fillText("/secrets", canvas.width / 2, canvas.height / 2);
+                sideTexture.needsUpdate = true;
             }
 
             renderer.render(scene, camera);
