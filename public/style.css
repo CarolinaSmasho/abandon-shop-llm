@@ -1,0 +1,134 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #FFFFFF;
+    font-family: 'Courier New', monospace;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    background-color: rgba(192, 192, 192, 0.5);
+}
+
+td {
+    padding: 20px;
+}
+
+input, button {
+    background-color: #808080;
+    border: 2px solid #000000;
+    color: #FFFFFF;
+    padding: 5px;
+    font-family: 'Courier New', monospace;
+}
+
+input::placeholder {
+    color: #CCCCCC;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #FF0000;
+    cursor: pointer;
+}
+
+a {
+    color: #0000FF;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #800080;
+}
+
+.static-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+}
+
+.product-table {
+    margin: 20px auto;
+    width: 90%;
+}
+
+.product-card {
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #FF0000;
+    background-color: #333333;
+    margin: 10px;
+    width: 150px;
+    vertical-align: top;
+}
+
+.product-card img {
+    border: 2px solid #000000;
+    image-rendering: pixelated;
+}
+
+.product-card:hover {
+    border-color: #800000;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
+}
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-text {
+    font-family: 'Courier New', monospace;
+    color: #00FF00;
+    font-size: 24px;
+    animation: blink 1s infinite;
+}
+
+.loading-bar {
+    width: 200px;
+    height: 20px;
+    border: 2px solid #FF0000;
+    background-color: #333333;
+    overflow: hidden;
+}
+
+.loading-progress {
+    width: 0;
+    height: 100%;
+    background-color: #FF0000;
+    animation: load 2s linear infinite;
+}
+
+.no-results {
+    font-family: 'Courier New', monospace;
+    color: #FF0000;
+    text-align: center;
+    font-size: 18px;
+    animation: blink 1s infinite; /* กระพริบเพื่อความหลอน */
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes load {
+    0% { width: 0; }
+    100% { width: 100%; }
+}

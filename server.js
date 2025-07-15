@@ -2,6 +2,12 @@ const express = require('express');
 const session = require('express-session');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const crypto = require('crypto');
+
+// ฟังก์ชันสร้างแฮช MD5
+function createMD5Hash(password) {
+    return crypto.createHash('md5').update(password).digest('hex');
+}
 
 const app = express();
 const port = 3000;
@@ -11,12 +17,6 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-const rateLimit = require('express-rate-limit');
-app.use(rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 นาที
-    max: 100 // จำกัด 100 requests ต่อ IP
-}));
-
 // ตั้งค่า session
 app.use(session({
     secret: 'ctf_secret_key',
@@ -25,18 +25,25 @@ app.use(session({
 }));
 
 // ตั้งค่าฐานข้อมูล SQLite
-const db = new sqlite3.Database(':memory:');
-db.serialize(() => {
-    db.run("CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)");
-    db.run("INSERT INTO products (name, price) VALUES ('Laptop', 1000), ('Phone', 500)");
-    db.run("CREATE TABLE users (username TEXT, password TEXT)");
-    db.run("INSERT INTO users (username, password) VALUES ('admin', 'supersecretpass')");
-});
+const db = new sqlite3.Database(path.join(__dirname, 'public', 'shop.db'));
 
 // หน้าแรก - แสดงสินค้าและฟอร์มค้นหา
 app.get('/', (req, res) => {
-    db.all("SELECT * FROM products", [], (err, rows) => {
-        res.render('index', { products: rows });
+    const searchQuery = req.query.search || '';
+    let sql = "SELECT id, name, price, image_url FROM products";
+    let params = [];
+    
+    if (searchQuery) {
+        sql += " WHERE name LIKE ?";
+        params = [`%${searchQuery}%`]; // ใช้ LIKE สำหรับค้นหา case-insensitive
+    }
+    
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
+        }
+        res.render('index', { products: rows, searchQuery: searchQuery });
     });
 });
 
@@ -47,7 +54,12 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    db.get("SELECT * FROM users WHERE username = ? AND password = ?", [username, password], (err, row) => {
+    const hashedPassword = createMD5Hash(password);
+    db.get("SELECT * FROM users WHERE username = ? AND password = ?", [username, hashedPassword], (err, row) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
+        }
         if (row) {
             req.session.isAdmin = true;
             res.redirect('/admin-panel');
@@ -68,7 +80,7 @@ app.get('/admin-panel', (req, res) => {
 // หน้า backup (ซ่อนอยู่)
 app.get('/backup', (req, res) => {
     res.set('Cache-Control', 'no-store');
-    res.download(path.join(__dirname, 'public', 'database.sql'));
+    res.download(path.join(__dirname, 'public', 'shop.db'));
 });
 
 // 404 สำหรับหน้าไม่พบ

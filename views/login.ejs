@@ -1,9 +1,29 @@
-<h1>Login</h1>
-<% if (error) { %>
-    <p style="color: red;"><%= error %></p>
-<% } %>
-<form method="POST" action="/login">
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Abandoned Shop</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+</head>
+<body background="/images/background.gif">
+    <table width="100%" border="1" bgcolor="#C0C0C0">
+        <tr>
+            <td align="center">
+                <h1 style="font-family: Times New Roman; color: #FF0000;">Access Restricted Area</h1>
+                <% if (error) { %>
+                    <p style="color: red; font-family: Courier New;"><%= error %></p>
+                <% } %>
+                <form method="POST" action="/login">
+                    <input type="text" name="username" placeholder="Username" style="font-family: Courier New;" required>
+                    <br><br>
+                    <input type="password" name="password" placeholder="Password" style="font-family: Courier New;" required>
+                    <br><br>
+                    <input type="submit" value="Enter">
+                </form>
+                <p style="color: #800080; font-family: Arial;">Who are you? Nobody should be here...</p>
+            </td>
+        </tr>
+    </table>
+    <!-- <img src="/images/static.gif" class="static-overlay" alt="static"> -->
+</body>
+</html>
