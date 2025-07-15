@@ -62,11 +62,23 @@ a:visited {
 .product-card {
     text-align: center;
     padding: 10px;
-    border: 2px solid #FF0000;
-    background-color: #333333;
+    border: 6px solid #333333;
+    background-image: url('/images/paper_red.png'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center; 
+    background-color: #333333; 
     margin: 10px;
     width: 150px;
     vertical-align: top;
+}
+
+.product-card:hover {
+    background-image: url('/images/water.gif'); /* Change background on hover */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: glitch 0.3s infinite; /* Glitch effect on hover */
 }
 
 .product-card img {
@@ -131,4 +143,17 @@ a:visited {
 @keyframes load {
     0% { width: 0; }
     100% { width: 100%; }
+}
+
+#canvas-container {
+    z-index: 950; /* อยู่ระหว่าง .creepy-overlay และ .static-overlay */
+}
+
+#message {
+    z-index: 1100; /* อยู่หน้าสุดเพื่อให้ข้อความชัดเจน */
+}
+
+/* เอฟเฟกต์ glitch สำหรับข้อความใน redroom */
+#message {
+    animation: glitch 0.3s infinite;
 }

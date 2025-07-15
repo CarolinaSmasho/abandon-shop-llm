@@ -6,15 +6,29 @@
     <script src="/script.js"></script>
 </head>
 <body background="/images/background.gif">
-    <table width="100%" border="1" bgcolor="#C0C0C0">
+    <table width="50%" border="1" bgcolor="rgba(192, 192, 192, 0.5)" align="center">
         <tr>
             <td align="center">
-                <h1 style="font-family: Times New Roman; color: #FF0000;">Admin Control Panel</h1>
-                <p style="font-family: Courier New;">You shouldn't be here... but you found it.</p>
-                <!-- ISAG{stay_young_beautiful_and_unstoppable} -->
+                <h1 style="font-family: Times New Roman; color: #FF0000;">Admin Panel</h1>
+                <p style="font-family: Courier New; color: #FF0000;">The final door requires a key...</p>
+                <% if (error) { %>
+                    <p style="color: #FF0000; font-family: Courier New;"><%= error %></p>
+                <% } %>
+                <form method="POST" action="/admin-panel">
+                    <p>
+                        <label style="font-family: Courier New;">Enter the key:</label><br>
+                        <input type="text" name="key" style="font-family: Courier New;">
+                    </p>
+                    <input type="submit" value="Unlock">
+                </form>
             </td>
         </tr>
+        <% if (flag) { %>
+            <p style="font-family: Courier New; color: #00FF00;">Flag: <%= flag %></p>
+        <% } %>
     </table>
-    <img src="/images/i-see-you-eyes.gif" class="static-overlay" alt="static">
+    <% if (!flag) { %>
+        <img src="/images/i-see-you-eyes.gif" class="static-overlay" alt="static">
+    <% } %>
 </body>
 </html>

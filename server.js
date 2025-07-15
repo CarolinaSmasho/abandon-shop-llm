@@ -27,6 +27,26 @@ app.use(session({
 // ตั้งค่าฐานข้อมูล SQLite
 const db = new sqlite3.Database(path.join(__dirname, 'public', 'shop.db'));
 
+// Middleware สำหรับ Basic Authentication
+function basicAuth(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        res.set('WWW-Authenticate', 'Basic realm="Backup Access"');
+        return res.status(401).send('Authentication required');
+    }
+
+    const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+    const username = auth[0];
+    const password = auth[1];
+
+    if (username === 'notatord' && password === 'ghjkl;') {
+        return next();
+    } else {
+        res.set('WWW-Authenticate', 'Basic realm="Backup Access"');
+        return res.status(401).send('Invalid credentials');
+    }
+}
+
 // หน้าแรก - แสดงสินค้าและฟอร์มค้นหา
 app.get('/', (req, res) => {
     const searchQuery = req.query.search || '';
@@ -69,24 +89,58 @@ app.post('/login', (req, res) => {
     });
 });
 
-// หน้า admin-panel (ต้องล็อกอิน)
 app.get('/admin-panel', (req, res) => {
     if (!req.session.isAdmin) {
         return res.status(403).render('404');
     }
-    res.render('admin-panel');
+    res.render('admin-panel', { error: null, flag: null });
+});
+
+app.post('/admin-panel', (req, res) => {
+    if (!req.session.isAdmin) {
+        return res.status(403).render('404');
+    }
+    const { key } = req.body;
+    if (!key) {
+        return res.render('admin-panel', { error: 'Key is required', flag: null });
+    }
+    db.get("SELECT encoded_flag FROM encoded_key WHERE id = ?", [1], (err, row) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).render('admin-panel', { error: 'Internal Server Error', flag: null });
+        }
+        if (!row) {
+            return res.render('admin-panel', { error: 'Flag not found', flag: null });
+        }
+        const decodedFlag = Buffer.from(row.encoded_flag, 'base64').toString();
+        if (key === decodedFlag) {
+            res.render('admin-panel', { error: null, flag: "ISAG{kawaii_raz0r_bl4de5}" });
+        } else {
+            res.render('admin-panel', { error: 'Invalid key', flag: null });
+        }
+    });
 });
 
 // หน้า backup (ซ่อนอยู่)
-app.get('/backup', (req, res) => {
+app.get('/backup', basicAuth, (req, res) => {
     res.set('Cache-Control', 'no-store');
     res.download(path.join(__dirname, 'public', 'shop.db'));
+});
+
+app.get('/secrets', (req, res) => {
+    res.send('Backup access: notatord: ghjkl;');
+});
+
+app.get('/redroom', (req, res) => {
+    res.render('redroom');
 });
 
 // 404 สำหรับหน้าไม่พบ
 app.use((req, res) => {
     res.status(404).render('404');
 });
+
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
