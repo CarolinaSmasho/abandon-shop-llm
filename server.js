@@ -82,8 +82,13 @@ app.post('/login', (req, res) => {
             return res.status(500).send('Internal Server Error');
         }
         if (row) {
-            req.session.isAdmin = true;
-            res.redirect('/admin-panel');
+            if (username === 'admin') {
+                req.session.isAdmin = true;
+                res.redirect('/admin-panel');
+            } else {
+                req.session.isAdmin = false;
+                res.send('Please login with admin credentials. ;)');
+            }
         } else {
             res.render('login', { error: 'Invalid credentials' });
         }
