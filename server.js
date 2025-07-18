@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const sqlite3 = require('sqlite3').verbose();
@@ -120,7 +121,7 @@ app.post('/admin-panel', (req, res) => {
         }
         const decodedFlag = Buffer.from(row.encoded_flag, 'base64').toString();
         if (key === decodedFlag) {
-            res.render('admin-panel', { error: null, flag: "ISAG{kawaii_raz0r_bl4de5}" });
+            res.render('admin-panel', { error: null, flag: process.env.GZCTF_FLAG });
         } else {
             res.render('admin-panel', { error: 'Invalid key', flag: null });
         }
@@ -134,14 +135,14 @@ app.get('/backup', basicAuth, (req, res) => {
 });
 
 app.get('/secrets', (req, res) => {
-    res.send('Backup access: notatord: ghjkl;');
+    res.send('Backup access: notatord:ghjkl;');
 });
 
 app.get('/redroom', (req, res) => {
     res.render('redroom');
 });
 
-// 404 สำหรับหน้าไม่พบ
+
 app.use((req, res) => {
     res.status(404).render('404');
 });
