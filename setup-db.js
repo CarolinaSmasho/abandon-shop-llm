@@ -28,7 +28,7 @@ db.serialize(() => {
     // สร้างตาราง users
     db.run("CREATE TABLE users (username TEXT, password TEXT)");
     const users = [
-        { username: 'admin', password: createMD5Hash('a;skljdfklasjewWHWESK#(NV:J()W:KVN') },
+        { username: 'admin', password: createMD5Hash('madison') },
         { username: 'user1', password: createMD5Hash('password123') },
         { username: 'user2', password: createMD5Hash('666') },
         { username: 'user3', password: createMD5Hash('letmein') },
