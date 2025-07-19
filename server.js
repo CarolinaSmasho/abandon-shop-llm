@@ -88,7 +88,7 @@ app.post('/login', (req, res) => {
                 res.redirect('/admin-panel');
             } else {
                 req.session.isAdmin = false;
-                res.send('Please login with admin credentials. ;)');
+                res.render('nothing_here');
             }
         } else {
             res.render('login', { error: 'Invalid credentials' });
