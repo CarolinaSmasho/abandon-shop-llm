@@ -3,14 +3,15 @@
 <head>
     <title>Abandoned Shop</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+    <script src="/script.js" defer></script>
 </head>
 <body background="/images/background.gif">
     <table width="60%" border="1" bgcolor="rgba(192, 192, 192, 0.5)">
         <tr>
-            <td align="center">
+            <td align="center" style="position: relative;">
                 <h1 style="font-family: Times New Roman; color: #FF0000;">Welcome to the Abandoned Shop</h1>
                 <marquee><a href="/redroom">doors are left unlocked by mistake...</a></marquee>
+                <a href="/login" style="position: absolute; top: 12px; right: 12px; font-family: Courier New; font-size: 12px; color: #AAAAAA; border: 1px solid #555; padding: 4px 10px; text-decoration: none; background: rgba(0,0,0,0.5);">Login</a>
             </td>
         </tr>
         <tr>
@@ -28,26 +29,22 @@
                         <% let count = 0; %>
                         <% products.forEach(product => { %>
                             <% if (count % 3 === 0) { %>
-                                <% if (count > 0) { %>
-                                    </tr>
-                                <% } %>
+                                <% if (count > 0) { %></tr><% } %>
                                 <tr>
                             <% } %>
-                            <td class="product-card">
+                            <td class="product-card" onclick="location.href='/product/<%= product.id %>'" style="cursor:pointer;">
                                 <img src="<%= product.image_url %>" alt="<%= product.name %>" width="100" height="100">
                                 <p style="font-family: Courier New;"><%= product.name %></p>
                                 <p style="font-family: Courier New;">$<%= product.price %></p>
                             </td>
                             <% count++; %>
                         <% }); %>
-                        <% if (count % 3 !== 0) { %>
-                            </tr>
-                        <% } %>
+                        <% if (count % 3 !== 0) { %></tr><% } %>
                     </table>
                 <% } else { %>
                     <p class="no-results">No products found...</p>
                 <% } %>
-                <p style="color: #800080; font-family: Arial;">This shop is always open... but nobody’s here.</p>
+                <p style="color: #800080; font-family: Arial;">This shop is always open... but nobody's here.</p>
             </td>
         </tr>
     </table>

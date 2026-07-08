@@ -25,23 +25,27 @@ db.serialize(() => {
            "(6, 'Cute Hello Kitty', 666, '/images/spy_cam.gif'), " +
            "(7, 'Concert Ticket', 200, '/images/license.png')");
 
-    // สร้างตาราง users
+    // สร้างตาราง users (เฉพาะ admin)
     db.run("CREATE TABLE users (username TEXT, password TEXT)");
-    const users = [
-        { username: 'admin', password: createMD5Hash('madison') },
-        { username: 'user1', password: createMD5Hash('password123') },
-        { username: 'user2', password: createMD5Hash('666') },
-        { username: 'user3', password: createMD5Hash('letmein') },
-    ];
-    const userStmt = db.prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-    users.forEach(user => {
-        userStmt.run(user.username, user.password);
-    });
-    userStmt.finalize();
+    db.run("INSERT INTO users (username, password) VALUES (?, ?)", ['admin', createMD5Hash('madison')]);
 
-    // สร้างตาราง flags
-    db.run("CREATE TABLE encoded_key (id INTEGER PRIMARY KEY, encoded_flag TEXT)");
-    db.run("INSERT INTO encoded_key (id, encoded_flag) VALUES (?, ?)", [1, Buffer.from('Mr. K1ll Myself').toString('base64')]);
+    // สร้างตาราง chat sessions สำหรับ AI support challenge
+    db.run("DROP TABLE IF EXISTS chat_sessions");
+    db.run("CREATE TABLE chat_sessions (session_id TEXT PRIMARY KEY, tier TEXT DEFAULT 'member')");
+
+    // สร้างตาราง reviews
+    db.run("DROP TABLE IF EXISTS reviews");
+    db.run("CREATE TABLE reviews (id INTEGER PRIMARY KEY AUTOINCREMENT, product_id INTEGER, reviewer TEXT, body TEXT, created_at TEXT DEFAULT (datetime('now')))");
+    const reviewStmt = db.prepare("INSERT INTO reviews (product_id, reviewer, body) VALUES (?, ?, ?)");
+    reviewStmt.run(1, 'Anna K.', 'Looks surprisingly natural. Nobody at the party noticed it was fake.');
+    reviewStmt.run(1, 'Mike T.', 'Great quality for the price. Shipping was fast too.');
+    reviewStmt.run(2, 'Dave R.', 'Battery life is way better than expected for a used phone. Minor scratches but nothing major.');
+    reviewStmt.run(2, 'Lisa M.', 'Works perfectly. Previous owner left some interesting photos on it though...');
+    reviewStmt.run(3, 'Ben W.', "It's a rock. Does exactly what a rock is supposed to do. Five stars.");
+    reviewStmt.run(5, 'Chris L.', "Don't ask where it came from. Just eat it. Genuinely delicious.");
+    reviewStmt.run(6, 'Sara J.', 'Adorable design. I put it on my shelf and now I feel like something is always watching me. 10/10.');
+    reviewStmt.run(7, 'Tom H.', 'The band never showed up but the ticket stub looks cool framed on my wall.');
+    reviewStmt.finalize();
 });
 
 db.close();

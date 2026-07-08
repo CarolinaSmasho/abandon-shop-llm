@@ -3,32 +3,20 @@
 <head>
     <title>Admin Panel - Abandoned Shop</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
 </head>
 <body background="/images/background.gif">
     <table width="50%" border="1" bgcolor="rgba(192, 192, 192, 0.5)" align="center">
         <tr>
             <td align="center">
                 <h1 style="font-family: Times New Roman; color: #FF0000;">Admin Panel</h1>
-                <p style="font-family: Courier New; color: #FF0000;">The final door requires a key...</p>
-                <% if (error) { %>
-                    <p style="color: #FF0000; font-family: Courier New;"><%= error %></p>
-                <% } %>
-                <form method="POST" action="/admin-panel">
-                    <p>
-                        <label style="font-family: Courier New;">Enter the key:</label><br>
-                        <input type="text" name="key" style="font-family: Courier New;">
-                    </p>
-                    <input type="submit" value="Unlock">
-                </form>
+                <p style="font-family: Courier New; color: #AAAAAA;">Welcome back, administrator.</p>
+                <div style="border: 2px solid #00FF00; padding: 20px; margin: 20px; background: rgba(0,30,0,0.7);">
+                    <p style="font-family: Courier New; color: #00FF00; font-size: 18px;">&#x1F6A9; FLAG</p>
+                    <p style="font-family: Courier New; color: #00FF00; font-size: 16px; word-break: break-all;"><%= flag %></p>
+                </div>
             </td>
         </tr>
-        <% if (flag) { %>
-            <p style="font-family: Courier New; color: #00FF00;">Flag: <%= flag %></p>
-        <% } %>
     </table>
-    <% if (!flag) { %>
-        <img src="/images/i-see-you-eyes.gif" class="static-overlay" alt="static">
-    <% } %>
+    <img src="/images/i-see-you-eyes.gif" class="static-overlay" alt="static">
 </body>
 </html>

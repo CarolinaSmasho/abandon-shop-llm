@@ -7,3 +7,7 @@ services:
       dockerfile: dockerfile
     ports:
       - "3000:3000"
+    environment:
+      - GZCTF_FLAG=${GZCTF_FLAG}
+      - LLM_BASE_URL=${LLM_BASE_URL}
+      - LLM_MODEL=${LLM_MODEL}
