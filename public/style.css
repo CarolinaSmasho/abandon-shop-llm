@@ -1,16 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+    --blue-bright:  #00CCFF;
+    --blue-mid:     #0088CC;
+    --blue-dark:    #003366;
+    --blue-deeper:  #001a33;
+    --blue-panel:   #000d1a;
+    --glow-strong:  rgba(0, 204, 255, 0.7);
+    --glow-mid:     rgba(0, 204, 255, 0.4);
+    --glow-soft:    rgba(0, 204, 255, 0.15);
+    --cyan:         #00FFFF;
+    --text-main:    #C8E8FF;
+    --text-dim:     #5599BB;
+}
+
 body {
     margin: 0;
     padding: 0;
-    background-color: #000000;
-    color: #FFFFFF;
-    font-family: 'Courier New', monospace;
+    background-color: #000810;
+    color: var(--text-main);
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+/* scanline effect */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.18) 2px,
+        rgba(0, 0, 0, 0.18) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
 }
 
 table {
     border-collapse: collapse;
     margin: 20px auto;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-    background-color: rgba(192, 192, 192, 0.5);
+    box-shadow: 0 0 18px var(--glow-mid), inset 0 0 10px var(--glow-soft);
+    background-color: rgba(0, 20, 40, 0.75);
+    border: 1px solid var(--blue-mid);
 }
 
 td {
@@ -18,42 +51,51 @@ td {
 }
 
 input, button {
-    background-color: #808080;
-    border: 2px solid #000000;
-    color: #FFFFFF;
-    padding: 5px;
-    font-family: 'Courier New', monospace;
+    background-color: var(--blue-deeper);
+    border: 1px solid var(--blue-mid);
+    color: var(--blue-bright);
+    padding: 5px 10px;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    transition: all 0.2s;
 }
 
 input::placeholder {
-    color: #CCCCCC;
+    color: var(--text-dim);
 }
 
 button:hover, input[type="submit"]:hover {
-    background-color: #FF0000;
+    background-color: var(--blue-mid);
+    color: #fff;
+    box-shadow: 0 0 10px var(--glow-mid);
     cursor: pointer;
 }
 
 a {
-    color: #0000FF;
+    color: var(--blue-bright);
     text-decoration: underline;
 }
 
 a:visited {
-    color: #800080;
+    color: #7799CC;
+}
+
+a:hover {
+    color: var(--cyan);
+    text-shadow: 0 0 6px var(--cyan);
 }
 
 .static-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    opacity: 0.2;
+    opacity: 0.15;
     pointer-events: none;
     z-index: 1000;
     width: 100%;
     height: 100%;
 }
 
+/* ---- Product Grid ---- */
 .product-table {
     margin: 20px auto;
     width: 90%;
@@ -62,42 +104,34 @@ a:visited {
 .product-card {
     text-align: center;
     padding: 10px;
-    border: 6px solid #333333;
-    background-image: url('/images/paper_red.png'); 
-    background-size: cover; 
-    background-repeat: no-repeat; 
-    background-position: center; 
-    background-color: #333333; 
+    border: 2px solid var(--blue-dark);
+    background-color: var(--blue-panel);
     margin: 10px;
     width: 150px;
     vertical-align: top;
+    transition: all 0.25s;
 }
 
 .product-card:hover {
-    background-image: url('/images/water.gif'); /* Change background on hover */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    animation: glitch 0.3s infinite; /* Glitch effect on hover */
+    border-color: var(--blue-bright);
+    box-shadow: 0 0 14px var(--glow-strong), 0 0 30px var(--glow-soft);
+    background-color: #001428;
+    animation: glitch 0.3s infinite;
 }
 
 .product-card img {
-    border: 2px solid #000000;
+    border: 2px solid var(--blue-dark);
     image-rendering: pixelated;
 }
 
-.product-card:hover {
-    border-color: #800000;
-    box-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
-}
-
+/* ---- Loading Screen ---- */
 #loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 8, 20, 0.92);
     z-index: 2000;
     display: flex;
     flex-direction: column;
@@ -106,55 +140,63 @@ a:visited {
 }
 
 .loading-text {
-    font-family: 'Courier New', monospace;
-    color: #00FF00;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    color: var(--blue-bright);
     font-size: 24px;
+    text-shadow: 0 0 10px var(--blue-bright);
     animation: blink 1s infinite;
 }
 
 .loading-bar {
     width: 200px;
     height: 20px;
-    border: 2px solid #FF0000;
-    background-color: #333333;
+    border: 2px solid var(--blue-mid);
+    background-color: var(--blue-panel);
     overflow: hidden;
+    box-shadow: 0 0 8px var(--glow-mid);
 }
 
 .loading-progress {
     width: 0;
     height: 100%;
-    background-color: #FF0000;
+    background: linear-gradient(90deg, var(--blue-dark), var(--blue-bright));
+    box-shadow: 0 0 8px var(--glow-strong);
     animation: load 2s linear infinite;
 }
 
 .no-results {
-    font-family: 'Courier New', monospace;
-    color: #FF0000;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    color: var(--blue-bright);
     text-align: center;
     font-size: 18px;
-    animation: blink 1s infinite; /* กระพริบเพื่อความหลอน */
+    text-shadow: 0 0 8px var(--blue-bright);
+    animation: blink 1s infinite;
 }
 
+/* ---- Animations ---- */
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
 
 @keyframes load {
-    0% { width: 0; }
+    0%   { width: 0; }
     100% { width: 100%; }
 }
 
-#canvas-container {
-    z-index: 950; /* อยู่ระหว่าง .creepy-overlay และ .static-overlay */
+@keyframes glitch {
+    0%   { transform: translate(0); filter: hue-rotate(0deg); }
+    20%  { transform: translate(-2px, 1px); }
+    40%  { transform: translate(2px, -1px); filter: hue-rotate(30deg); }
+    60%  { transform: translate(-1px, 2px); }
+    80%  { transform: translate(1px, -1px); }
+    100% { transform: translate(0); filter: hue-rotate(0deg); }
 }
 
-#message {
-    z-index: 1100; /* อยู่หน้าสุดเพื่อให้ข้อความชัดเจน */
-}
+#canvas-container { z-index: 950; }
 
-/* เอฟเฟกต์ glitch สำหรับข้อความใน redroom */
 #message {
+    z-index: 1100;
     animation: glitch 0.3s infinite;
 }
 
@@ -164,66 +206,84 @@ a:visited {
     bottom: 20px;
     right: 20px;
     z-index: 3000;
-    font-family: 'Courier New', monospace;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 #chat-toggle {
-    background-color: #800000;
-    color: #FFFFFF;
-    border: 2px solid #FF0000;
+    background-color: var(--blue-dark);
+    color: var(--blue-bright);
+    border: 2px solid var(--blue-bright);
     padding: 8px 14px;
     cursor: pointer;
-    font-family: 'Courier New', monospace;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
     font-size: 13px;
-    box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+    box-shadow: 0 0 12px var(--glow-mid);
+    transition: all 0.2s;
 }
 
 #chat-toggle:hover {
-    background-color: #FF0000;
+    background-color: var(--blue-mid);
+    box-shadow: 0 0 20px var(--glow-strong);
+    color: #fff;
 }
 
 #chat-panel {
     display: none;
     flex-direction: column;
-    width: 340px;
-    height: 460px;
-    min-width: 260px;
-    min-height: 300px;
-    max-width: 70vw;
-    max-height: 80vh;
-    background-color: #0a0a0a;
-    border: 2px solid #FF0000;
-    box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
+    width: 480px;
+    height: 600px;
+    min-width: 300px;
+    min-height: 360px;
+    max-width: 90vw;
+    max-height: 85vh;
+    background-color: #000c18;
+    border: 2px solid var(--blue-mid);
+    box-shadow: 0 0 20px var(--glow-mid);
+    /* anchor bottom-right so resize handle drags toward top-left */
     position: absolute;
     bottom: 44px;
     right: 0;
     resize: both;
     overflow: hidden;
+    /* resize handle flipped to top-left via transform trick */
+    direction: rtl;
+}
+
+#chat-header,
+#chat-messages,
+#chat-input-row,
+.chat-msg {
+    direction: ltr;
 }
 
 #chat-header {
-    background-color: #1a0000;
-    color: #FF4444;
+    background-color: var(--blue-deeper);
+    color: var(--blue-bright);
     padding: 6px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #500000;
+    border-bottom: 1px solid var(--blue-dark);
     font-size: 12px;
+    text-shadow: 0 0 6px var(--blue-bright);
 }
 
 #chat-close, #chat-reset {
     background: none;
     border: none;
-    color: #FF4444;
+    color: var(--blue-bright);
     cursor: pointer;
     font-size: 16px;
     padding: 0 4px;
 }
 
 #chat-close:hover, #chat-reset:hover {
-    color: #FFFFFF;
+    color: var(--cyan);
     background: none;
+    text-shadow: 0 0 6px var(--cyan);
 }
 
 #chat-messages {
@@ -235,69 +295,71 @@ a:visited {
     gap: 8px;
 }
 
-#chat-messages::-webkit-scrollbar {
-    width: 4px;
-}
-#chat-messages::-webkit-scrollbar-track { background: #111; }
-#chat-messages::-webkit-scrollbar-thumb { background: #500000; }
+#chat-messages::-webkit-scrollbar        { width: 4px; }
+#chat-messages::-webkit-scrollbar-track  { background: #000c18; }
+#chat-messages::-webkit-scrollbar-thumb  { background: var(--blue-dark); }
 
 .chat-msg {
     padding: 6px 10px;
     font-size: 12px;
     line-height: 1.5;
-    border: 1px solid #333;
+    border: 1px solid #1a3a5c;
     max-width: 85%;
     word-break: break-word;
 }
 
 .chat-msg-user {
-    background-color: #1a1a2e;
-    color: #AAAAFF;
-    border-color: #333366;
+    background-color: #001428;
+    color: var(--blue-bright);
+    border-color: var(--blue-dark);
     align-self: flex-end;
 }
 
 .chat-msg-assistant {
-    background-color: #1a0a0a;
-    color: #CCCCCC;
-    border-color: #500000;
+    background-color: #000a14;
+    color: var(--text-main);
+    border-color: #1a3a5c;
     align-self: flex-start;
 }
 
 #chat-input-row {
     display: flex;
-    border-top: 1px solid #500000;
+    border-top: 1px solid var(--blue-dark);
     padding: 6px;
     gap: 6px;
 }
 
 #chat-input {
     flex: 1;
-    background-color: #111;
-    border: 1px solid #500000;
-    color: #CCCCCC;
+    background-color: #000c18;
+    border: 1px solid var(--blue-dark);
+    color: var(--text-main);
     padding: 5px 8px;
-    font-family: 'Courier New', monospace;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
     font-size: 12px;
 }
 
 #chat-input:focus {
     outline: none;
-    border-color: #FF0000;
+    border-color: var(--blue-bright);
+    box-shadow: 0 0 6px var(--glow-soft);
 }
 
 #chat-send {
-    background-color: #500000;
-    border: 1px solid #FF0000;
-    color: #FFFFFF;
+    background-color: var(--blue-dark);
+    border: 1px solid var(--blue-bright);
+    color: var(--blue-bright);
     padding: 5px 10px;
     cursor: pointer;
-    font-family: 'Courier New', monospace;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
     font-size: 12px;
+    transition: all 0.2s;
 }
 
 #chat-send:hover {
-    background-color: #FF0000;
+    background-color: var(--blue-mid);
+    color: #fff;
+    box-shadow: 0 0 10px var(--glow-mid);
 }
 
 #chat-send:disabled {
